@@ -13,7 +13,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from "@/utils/supabase";
 import { toast } from "sonner";
-import { AccountProvider, AccountAddress } from "thirdweb/react";
+import { AccountProvider, AccountAddress, useActiveAccount } from "thirdweb/react";
 import client from "@/utils/web3";
 import { shortenAddress } from "thirdweb/utils";
 import { Button } from "../ui/button";
@@ -34,6 +34,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "../ui/textarea";
 
 
+
 interface transaction {
     sender: string;
     receiver: string;
@@ -48,6 +49,7 @@ export default function Transactions() {
 
     const { address } = useParams();
     const navigate = useNavigate()
+    const account = useActiveAccount();
 
     const [transactions, setTransactions] = useState<transaction[]>([]);
     const [total, setTotal] = useState<string>();
@@ -75,7 +77,8 @@ export default function Transactions() {
                 setTotal(String(roundedSum));
 
                 // @ts-expect-error - Ignore TypeScript type warnings for the next line
-                setTransactions(result.success)
+                const arrangeTransactions = result.success.reverse();
+                setTransactions(arrangeTransactions);
 
 
 
@@ -180,9 +183,9 @@ export default function Transactions() {
                                     </Label>
                                     <Textarea
                                         id="message"
-                                        className={`resize-none ${selectedTransaction.transaction.isPrivate ? "text-gray-400" : ""
+                                        className={`resize-none ${selectedTransaction.transaction.isPrivate && address !== account?.address ? "text-gray-400" : "text-black"
                                             }`}
-                                        value={selectedTransaction.transaction.isPrivate ? "Message is Private" : selectedTransaction.transaction.message}
+                                        value={selectedTransaction.transaction.isPrivate && address !== account?.address  ? "Message is Private" : selectedTransaction.transaction.message}
                                         readOnly
                                     />
                                 </div>
