@@ -5,6 +5,8 @@ import { lightTheme } from "thirdweb/react";
 import { Coffee } from "lucide-react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import Badge from "../badge/badge";
+import Footer from "../footer/footer";
 
 
 const wallets = [
@@ -29,10 +31,11 @@ export default function Home() {
 
     return (
         <div className="min-h-screen flex flex-col overflow-hidden">
-            <nav className="w-full flex items-center p-4 ml-5">
+            <nav className="w-full flex items-center justify-between p-4 ml-5">
                 <a href="/">
                     <Coffee color="#facc15" className="w-10 h-10" />
                 </a>
+                <Badge/>
             </nav>
 
             <main className="flex-grow flex flex-col items-center justify-center p-8 relative top-[-2rem] overflow-hidden selection:bg-[rgb(250,204,21)] selection:text-black">
@@ -92,6 +95,10 @@ export default function Home() {
 
 
             </main>
+
+            <footer className="flex justify-center items-center">
+                <Footer/>
+            </footer>
         </div>
     );
 }
