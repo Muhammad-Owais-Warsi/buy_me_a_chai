@@ -6,7 +6,7 @@ import { Coffee } from "lucide-react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Badge from "../badge/badge";
-import Footer from "../footer/footer";
+
 
 
 const wallets = [
@@ -96,8 +96,8 @@ export default function Home() {
 
             </main>
 
-            <footer className="flex justify-center items-center">
-                <Footer/>
+            <footer className="flex justify-center items-center mb-5">
+                <iframe src="https://buy-me-a-chai.betteruptime.com/badge?theme=light" width="250" height="30"  scrolling="no" style={{colorScheme: "normal"}}></iframe>
             </footer>
         </div>
     );
