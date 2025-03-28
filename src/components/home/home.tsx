@@ -5,7 +5,7 @@ import { lightTheme } from "thirdweb/react";
 import { Coffee } from "lucide-react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Badge from "../badge/badge";
+
 
 
 
@@ -35,7 +35,7 @@ export default function Home() {
                 <a href="/">
                     <Coffee color="#facc15" className="w-10 h-10" />
                 </a>
-                <Badge/>
+          
             </nav>
 
             <main className="flex-grow flex flex-col items-center justify-center p-8 relative top-[-2rem] overflow-hidden selection:bg-[rgb(250,204,21)] selection:text-black">
@@ -46,7 +46,7 @@ export default function Home() {
                         alt="Tea"
                         className="w-40 h-40 md:w-48 md:h-48 mb-6 md:hidden"
                     />
-
+                
                     <div className="text-center md:text-left flex-1">
                         <h1 className="text-5xl font-bold text-[rgb(250,204,21)] mb-4">
                             Buy Me A Chai

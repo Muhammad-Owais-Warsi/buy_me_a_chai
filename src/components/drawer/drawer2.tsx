@@ -19,36 +19,36 @@ import { toast } from "sonner";
 
 interface props {
     address: string;
-    name: string;
-    bio: string;
-    social: string;
-    profile: string | null;
+    title: string;
+    description: string;
+    buttonText: string;
+
 }
 
 
 
-export default function SheetDemo({ address, name, bio, social, profile }: props) {
+export default function SheetDemo2({ address, title, description, buttonText }: props) {
 
 
-    const [newProfile, setNewProfile] = useState<File | undefined>();
-    const [newName, setNewName] = useState<string>();
-    const [newBio, setNewBio] = useState<string>();
-    const [newSocial, setNewSocial] = useState<string>();
+    const [newTitle, setNewTitle] = useState<string>();
+    const [newDescription, setNewDescription] = useState<string>();
+    const [newButtonText, setNewButtonText] = useState<string>();
+
 
     useEffect(() => {
-        setNewName(name);
-        setNewBio(bio);
-        setNewSocial(social);
-    }, [name, bio, social, profile]);
+        setNewTitle(title);
+        setNewDescription(description);
+        setNewButtonText(buttonText);
+    }, [title, buttonText, description]);
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
 
     const update = async () => {
-        if (name !== newName || bio !== newBio || social !== newSocial || newProfile) {
+        if (title !== newTitle || description !== newDescription || buttonText !== newButtonText) {
             setIsLoading(true)
-            const result = await api.update(address, newName, newBio, newSocial, newProfile);
+            const result = await api.updateCard(address, newTitle, newDescription, newButtonText);
 
             if (result.error) {
                 toast.error(result.error);
@@ -77,73 +77,59 @@ export default function SheetDemo({ address, name, bio, social, profile }: props
             <SheetContent>
                 <SheetHeader>
                     <SheetTitle className="text-[rgb(250,204,21)]">
-                        Edit profile
+                        Edit card
                     </SheetTitle>
                     <SheetDescription>
-                        Make changes to your profile here. Click save when you're done.
+                        Make changes to your card here. Click save when you're done.
                     </SheetDescription>
                 </SheetHeader>
                 <div className="grid gap-6 py-6 left-24">
                     <div className="grid grid-cols-4 items-center gap-4 justify-start">
                         <Label
-                            htmlFor="name"
+                            htmlFor="title"
                             className="text-right text-[rgb(250,204,21)] col-span-1"
                         >
-                            Profile Pic
+                            Title
                         </Label>
                         <Input
-                            id="pic"
-                            type="file"
-                            className="col-span-3"
-                            onChange={(e) => setNewProfile(e.target.files ? e.target.files[0] : undefined)}
-                        />
-                    </div>
-                    <div className="grid grid-cols-4 items-center gap-4 justify-start">
-                        <Label
-                            htmlFor="name"
-                            className="text-right text-[rgb(250,204,21)] col-span-1"
-                        >
-                            Name
-                        </Label>
-                        <Input
-                            id="name"
-                            value={newName}
+                            id="title"
+                            value={newTitle}
                             placeholder="example: chai.eth"
                             className="col-span-3"
                             autoComplete="off"
-                            onChange={(e) => setNewName(e.target.value)}
+                            onChange={(e) => setNewTitle(e.target.value)}
                         />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4 justify-start">
                         <Label
-                            htmlFor="bio"
+                            htmlFor="description"
                             className="text-right text-[rgb(250,204,21)] col-span-1"
                         >
-                            Bio
+                            Description
                         </Label>
                         <Textarea
-                            id="bio"
-                            value={newBio}
+                            id="description"
+                            value={newDescription}
                             placeholder="Tell us about yourself."
                             className="col-span-3 resize-none"
                             autoComplete="off"
-                            onChange={(e) => setNewBio(e.target.value)}
+                            onChange={(e) => setNewDescription(e.target.value)}
                         />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4 justify-start">
                         <Label
-                            htmlFor="social"
+                            htmlFor="button"
                             className="text-right text-[rgb(250,204,21)] col-span-1"
                         >
-                            Social
+                            Button
                         </Label>
                         <Input
-                            id="social"
-                            value={newSocial}
-                            placeholder="https://chai.eth"
+                            id="button"
+                            value={newButtonText}
+                            placeholder="Pay"
                             className="col-span-3"
                             autoComplete="off"
-                            onChange={(e) => setNewSocial(e.target.value)}
+                            onChange={(e) => setNewButtonText(e.target.value)}
                         />
                     </div>
                 </div>

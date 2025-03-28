@@ -32,6 +32,7 @@ interface User {
     name: string | null;
     bio: string | null;
     social: string | null;
+    profile: string | undefined | null;
 }
 interface props {
     routeAddress: string;
@@ -91,13 +92,17 @@ export default function Profile({ routeAddress, activeAddress }: props) {
         const fetchUser = async () => {
             setIsFetching(true);
             const result = await api.isUser(routeAddress!);
-
+            console.log(result)
             if (result.error) {
                 toast.error(result.error);
                 return;
             }
             setIsFetching(false);
-            setUser(result.success?.[0]);
+            console.log(result)
+            const finalData: User = result.success?.[0];
+            finalData.profile = result?.profile
+            console.log(finalData)
+            setUser(finalData);
             return;
 
         };
@@ -114,7 +119,15 @@ export default function Profile({ routeAddress, activeAddress }: props) {
 
 
                         <div className="flex flex-col justify-center items-center lg:items-start">
-                            <AccountBlobbie className="w-20 h-20 rounded-full" />
+                            {
+                                user?.profile ? (
+                                    <div className="w-20 h-20 rounded-full">
+                                        <img src={user.profile} alt="User Profile" className="w-20 h-20 rounded-full"/>
+                                    </div>
+                                ) : (
+                                    <AccountBlobbie className="w-20 h-20 rounded-full" />
+                                )
+                            }
                             {
                                 routeAddress === activeAddress ?
                                     <div className="flex space-x-4 ml-5 mt-4 gap-4 lg:gap-0">
@@ -126,6 +139,7 @@ export default function Profile({ routeAddress, activeAddress }: props) {
                                                         name={user?.name || GUEST_DETAILS.name}
                                                         bio={user?.bio || GUEST_DETAILS.bio}
                                                         social={user?.social || GUEST_DETAILS.social}
+                                                        profile={user?.profile || null}
                                                     />
                                                 </TooltipTrigger>
                                                 <TooltipContent>
@@ -150,37 +164,12 @@ export default function Profile({ routeAddress, activeAddress }: props) {
                                         {isCopied ? <Check color="#0cbb2f" className="w-4 h-4" /> : <Copy color="#facc15" className="w-4 h-4" />}
                                     </Button>
 
-                                    {/* <TooltipProvider>
-                                        <Tooltip>
-                                            <TooltipTrigger>
-                                                <Badge
-                                                    onClick={() => alert("hello")}
-                                                    variant="outline"
-                                                    className={isLoggedIn ? "text-gray-600 cursor-pointer" : "text-red-500 cursor-pointer"}
-                                                >
-                                                    {isLoggedIn ? (
-                                                        <div className="flex items-center gap-2">
-                                                            <Dot color="#0cbb2f" className="w-6 h-6 animate-ping" />
-                                                            <p>Active</p>
-                                                        </div>
-                                                    ) : (
-                                                        <div className="flex items-center gap-2">
-                                                            <Dot color="#bb0c0c" className="w-6 h-6" />
-                                                            <p>Not active</p>
-                                                        </div>
-                                                    )}
-                                                </Badge>
-                                            </TooltipTrigger>
-                                            <TooltipContent>
-                                                <p>Manage Account</p>
-                                            </TooltipContent>
-                                        </Tooltip>
-                                    </TooltipProvider> */}
+
                                 </div>
                             </div>
 
 
-                            <p className="text-gray-500 mt-2">
+                            <p className="text-gray-500">
                                 {user ? user.bio : GUEST_DETAILS.bio}
                             </p>
 
@@ -202,7 +191,7 @@ export default function Profile({ routeAddress, activeAddress }: props) {
                                 <TooltipProvider>
                                     <Tooltip>
                                         <TooltipTrigger>
-                                            <Button variant="ghost" onClick={shareCopy} disabled={isCopied}>
+                                            <Button variant="ghost" onClick={shareCopy} disabled={isCopied} className="flex justify-center items-center relative right-4">
                                                 { isShareCopied ? <Check color="#0cbb2f" className="w-4 h-4" /> : <Share2 color="#facc15" /> }
                                             </Button>
                                         </TooltipTrigger>
